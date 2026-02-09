@@ -1,21 +1,23 @@
 services:
   api:
-  image: node:20-alpine
-  working_dir: /app
-  volumes:
-    - ./:/app
-  command: sh -c "npm install && node main.js"
-  ports:
-    - "3000:3000"
-  environment:
-    - MONGO_URL=mongodb://mongo:27017/appdb
-  depends_on:
-    - mongo
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: sh -c "npm install && node main.js"
+    ports:
+      - "3000:3000"
+    environment:
+      MONGO_URL: mongodb://mongo:27017/appdb
+    depends_on:
+      - mongo
+    restart: unless-stopped
 
   mongo:
     image: mongo:7
     volumes:
       - mongo_data:/data/db
+    restart: unless-stopped
 
 volumes:
   mongo_data:
